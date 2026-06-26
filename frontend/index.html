@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src 'self' http://localhost:*;">
+    <title>SafeCode Analyzer</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <header>
+        <div class="header-inner">
+            <h1>SafeCode Analyzer</h1>
+            <span class="tagline">Security by Design</span>
+            <div class="header-actions">
+                <span id="llm-status" class="status-dot" title="LLM status"></span>
+                <button id="settings-btn" class="icon-btn" title="Settings">&#9881;</button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="toolbar">
+            <div class="language-select">
+                <label for="lang-select">Language:</label>
+                <select id="lang-select">
+                    <option value="auto">Auto Detect</option>
+                    <option value="python">Python</option>
+                    <option value="javascript">JavaScript</option>
+                    <option value="typescript">TypeScript</option>
+                    <option value="c">C</option>
+                    <option value="cpp">C++</option>
+                    <option value="go">Go</option>
+                    <option value="java">Java</option>
+                    <option value="kotlin">Kotlin</option>
+                </select>
+            </div>
+            <div class="code-stats">
+                <span id="line-count">0 lines</span>
+                <span id="char-count">0 chars</span>
+            </div>
+        </div>
+
+        <div class="editor-container">
+            <textarea id="code-input" placeholder="Paste or type your code here..." spellcheck="false"></textarea>
+            <div class="line-numbers" id="line-numbers">1</div>
+        </div>
+
+        <div class="actions">
+            <button id="btn-security" class="action-btn primary">
+                <span class="btn-icon">&#128737;</span>
+                Analyse Security
+            </button>
+            <button id="btn-bugs" class="action-btn secondary">
+                <span class="btn-icon">&#128030;</span>
+                Find Bugs
+            </button>
+            <button id="btn-translate" class="action-btn accent">
+                <span class="btn-icon">&#128214;</span>
+                Translate Code
+            </button>
+            <button id="btn-fix" class="action-btn warn">
+                <span class="btn-icon">&#128295;</span>
+                Fix Code
+            </button>
+            <button id="btn-clear" class="action-btn ghost">
+                Clear Results
+            </button>
+        </div>
+
+        <div id="results-container" class="hidden">
+            <div class="results-header">
+                <h2>Results</h2>
+                <div id="results-summary"></div>
+                <button id="btn-close-results" class="icon-btn">&times;</button>
+            </div>
+            <div id="results-content"></div>
+        </div>
+
+        <div id="loading-overlay" class="hidden">
+            <div class="spinner"></div>
+            <span>Analysing...</span>
+        </div>
+    </main>
+
+    <div id="settings-modal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Settings</h2>
+                <button id="btn-close-settings" class="icon-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="setting-group">
+                    <h3>LLM Configuration</h3>
+                    <p class="setting-desc">An Ollama instance is required for Code Translation and Fix Code features. Security analysis and bug detection work without it.</p>
+                    <label>
+                        LLM Enabled:
+                        <input type="checkbox" id="setting-llm-enabled">
+                        <span class="hint">Set SAFECODE_LLM_ENABLED=true on the server</span>
+                    </label>
+                    <label>
+                        Ollama Host:
+                        <input type="text" id="setting-ollama-host" value="http://localhost:11434" disabled>
+                    </label>
+                    <label>
+                        Model:
+                        <input type="text" id="setting-ollama-model" value="codellama" disabled>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/js/api.js"></script>
+    <script src="/static/js/editor.js"></script>
+    <script src="/static/js/app.js"></script>
+</body>
+</html>
